@@ -18,6 +18,7 @@
 #include <openssl/rand.h>
 #include <openssl/evp.h>
 #include <bits/stdc++.h>
+#include <chrono>
 using namespace std;
 namespace nr::ue
 {
@@ -517,7 +518,7 @@ nas::IE5gsMobileIdentity NasMm::generateSuci()
     ret.imsi.plmn.mcc = plmn.mcc;
     ret.imsi.plmn.mnc = plmn.mnc;
     ret.imsi.routingIndicator = "0000";
-    ret.imsi.protectionSchemaId = 1;
+    ret.imsi.protectionSchemaId = 2;
     ret.imsi.homeNetworkPublicKeyIdentifier = 255;
     ret.imsi.schemeOutput = imsi.substr(plmn.isLongMnc ? 6 : 5);
         // m_logger->err("BEYOND 5G 1212 %s",imsi.c_str() );
@@ -532,8 +533,11 @@ nas::IE5gsMobileIdentity NasMm::generateSuci()
         // m_logger->err("BEYOND 5G 1212 %s",ret.imsi.schemeOutput.c_str() );
         // m_logger->err("BEYOND 5G 1212 H");
         // m_logger->err("BEYOND 5G 1212 %s",supi->value.c_str() );
-
+    auto begin = std::chrono::high_resolution_clock::now();
     ret.imsi.schemeOutput = encrypt(ret.imsi.protectionSchemaId, ret.imsi.homeNetworkPublicKeyIdentifier, ret.imsi.schemeOutput);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    m_logger->info("BEYOND 5G SUPI to SUCI encryption time:%f ms",1e-6*elapsed.count());
         // m_logger->err("BEYOND 5G encr %s",ret.imsi.schemeOutput.c_str() );
         // m_logger->err("BEYOND 5G len %d",ret.imsi.schemeOutput.length() );
         
