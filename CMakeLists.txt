@@ -22,6 +22,8 @@ add_subdirectory(src/ue)
 add_executable(nr-gnb src/gnb.cpp)
 
 target_link_libraries(nr-gnb pthread)
+find_package(OpenSSL REQUIRED)
+target_link_libraries(nr-gnb OpenSSL::SSL OpenSSL::Crypto)
 
 target_compile_options(nr-gnb PRIVATE -Wall -Wextra -pedantic)
 
@@ -34,6 +36,8 @@ target_link_libraries(nr-gnb gnb)
 
 add_executable(nr-ue src/ue.cpp)
 target_link_libraries(nr-ue pthread)
+find_package(OpenSSL REQUIRED)
+target_link_libraries(nr-ue OpenSSL::SSL OpenSSL::Crypto)
 target_compile_options(nr-ue PRIVATE -Wall -Wextra -pedantic)
 
 target_link_libraries(nr-ue common-lib)
@@ -48,6 +52,9 @@ target_link_libraries(devbnd dl)
 #################### CLI EXECUTABLE ####################
 add_executable(nr-cli src/cli.cpp)
 target_link_libraries(nr-cli pthread)
+find_package(OpenSSL REQUIRED)
+target_link_libraries(nr-ue OpenSSL::SSL OpenSSL::Crypto)
+
 target_compile_options(nr-cli PRIVATE -Wall -Wextra -pedantic)
 
 target_link_libraries(nr-cli common-lib)

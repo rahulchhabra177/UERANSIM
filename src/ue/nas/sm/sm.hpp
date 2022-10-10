@@ -41,6 +41,7 @@ class NasSm
   public: /* Base */
     void onStart(NasMm *mm);
     void onQuit();
+    //std::string encrypt(int protectionSchemaId, int homeNetworkPublicKeyIdentifier, std::string schemeOutput); 
 
   private: /* Resource */
     void localReleaseSession(int psi);
